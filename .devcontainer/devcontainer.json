@@ -1,0 +1,35 @@
+{
+    "name": "${localWorkspaceFolderBasename}",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--hostname",
+        "${localWorkspaceFolderBasename}"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "spmeesseman.vscode-taskexplorer"
+            ],
+            "settings": {
+                "tasks": {
+                    "version": "2.0.0",
+                    "tasks": [
+                        {
+                            "label": "conf",
+                            "type": "shell",
+                            "command": ".devcontainer/conf.sh"
+                        },
+                        {
+                            "label": "build",
+                            "type": "shell",
+                            "command": ".devcontainer/build.sh"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
