@@ -713,6 +713,12 @@ void show_stacktrace(void)
 
    }
 
+#ifdef DEBUG
+   char *dedup_tok = debug_dedup(di);
+   color_fprintf(stderr, "\n$!red$DEDUP_TOKEN: %s$$\n", dedup_tok);
+   free(dedup_tok);
+#endif
+
    debug_free(di);
 
 #if defined __linux__ && !defined HAVE_LIBDW && !defined HAVE_LIBDWARF

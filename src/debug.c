@@ -62,6 +62,7 @@
 #endif
 
 #define MAX_TRACE_DEPTH   25
+#define MAX_DEDUP_DEPTH   4
 
 struct debug_info {
    A(debug_frame_t*) frames;
@@ -924,6 +925,32 @@ unsigned debug_count_frames(debug_info_t *di)
 const debug_frame_t *debug_get_frame(debug_info_t *di, unsigned n)
 {
    return AGET(di->frames, n);
+}
+
+char *debug_dedup(debug_info_t *di)
+{
+   const char *symbols[MAX_DEDUP_DEPTH] = {0};
+
+   int depth = 0;
+   size_t len = 0;
+   const int nframes = debug_count_frames(di);
+   for (int n = 1; n < nframes; n++) {
+      const debug_frame_t *f = debug_get_frame(di, n);
+      if (f->kind == FRAME_PROG && f->symbol != NULL
+          && depth < MAX_DEDUP_DEPTH) {
+         symbols[depth++] = f->symbol;
+         len += strlen(f->symbol);
+      }
+   }
+   len += 2 * (MAX_DEDUP_DEPTH - 1) + 1; // "--" between symbols + '\0'
+
+   char *tok = calloc(len, sizeof(char));
+   for (int n = 0; n < depth; n++) {
+      if (n != 0) strcat(tok, "--");
+      strcat(tok, symbols[n]);
+   }
+
+   return tok;
 }
 
 void debug_add_unwinder(void *start, size_t len, debug_unwind_fn_t fn,
