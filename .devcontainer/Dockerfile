@@ -28,7 +28,9 @@ RUN <<EOF
         zlib1g-dev \
         libzstd-dev \
         tcl-dev \
-        libreadline-dev
+        libreadline-dev \
+        gdb \
+        gdbserver
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
