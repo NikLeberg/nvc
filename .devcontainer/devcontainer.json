@@ -10,8 +10,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-vscode.cpptools",
-                "spmeesseman.vscode-taskexplorer"
+                "ms-vscode.cpptools"
             ],
             "settings": {
                 "tasks": {
@@ -26,6 +25,28 @@
                             "label": "build",
                             "type": "shell",
                             "command": ".devcontainer/build.sh"
+                        }
+                    ]
+                },
+                "launch": {
+                    "configurations": [
+                        {
+                            // use with: "gdbserver :3333 bin/nvc <args>"
+                            "name": "(gdb) Remote",
+                            "type": "cppdbg",
+                            "request": "launch",
+                            "cwd": "${workspaceFolder}/build",
+                            "program": "${workspaceFolder}/build/bin/nvc",
+                            "MIMode": "gdb",
+                            "miDebuggerPath": "/usr/bin/gdb",
+                            "miDebuggerServerAddress": "localhost:3333",
+                            "setupCommands": [
+                                {
+                                    "description": "Enable pretty-printing",
+                                    "text": "-enable-pretty-printing",
+                                    "ignoreFailures": true
+                                }
+                            ]
                         }
                     ]
                 }
