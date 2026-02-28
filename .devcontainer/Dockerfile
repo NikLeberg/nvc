@@ -1,7 +1,10 @@
 # Based off https://github.com/hdl/containers/blob/main/debian-bullseye/nvc/Dockerfile
 FROM ubuntu:24.04
 
-ENV LLVM_VERSION=14
+ARG USERNAME=ubuntu
+ARG USERHOME=/home/$USERNAME
+
+ENV LLVM_VERSION=20
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8 \
@@ -34,3 +37,6 @@ RUN <<EOF
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 EOF
+
+USER $USERNAME
+WORKDIR $USERHOME
